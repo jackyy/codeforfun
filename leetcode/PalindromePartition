@@ -1,0 +1,70 @@
+import java.util.*;
+
+public class Solution {
+     public static void main(String []args){
+        String problem="aaaaaaa";
+        Solution s=new Solution();        
+        List<List<String>> parts=s.partition(problem);
+        
+        for(List<String> part:parts){
+            for(String str:part){
+                System.out.print("'"+str+"'"+",");
+            }
+            System.out.println();
+        }
+     }
+     
+    boolean p[][];
+    int len;
+    String str;
+    public List<List<String>> partition(String s) {
+        p = new boolean[s.length()][s.length()];
+        len=s.length();
+        str=s;
+        
+        // build Palindrome map
+        for(int l=0;l<s.length();l++)
+            for(int i=0;i<s.length();i++){
+                int e=i+l;
+                if(e>=s.length())continue;
+                if(l==0){
+                    p[i][e]=true;
+                    continue;
+                }else if (l==1){ 
+                    if (s.charAt(i)==s.charAt(e))
+                    {
+                        p[i][e]=true;
+                    }else{
+                        p[i][e]=false;
+                    }
+                }else{
+                    if(s.charAt(i)==s.charAt(e)){
+                        p[i][e]=p[i+1][e-1];
+                    }else{
+                        p[i][e]=false;
+                    }
+                }
+            }
+        
+        return getpartition(0);
+    }
+    
+    List<List<String>> getpartition(int s){
+        List<List<String>> results=new ArrayList<List<String>>();
+        for(int i=s;i<len;i++){
+            if(p[s][i]){
+                List<List<String>> subs=getpartition(i+1);
+                if(subs.size()==0){
+                	LinkedList<String> sub=new LinkedList<String>();
+                	sub.add(str.substring(s,i+1));
+                	results.add(sub);
+                }else
+                for(List<String> sub:subs){
+                    sub.add(0, str.substring(s, i+1));
+                    results.add(sub);
+                }
+            }
+        }
+        return results;
+    }
+}
