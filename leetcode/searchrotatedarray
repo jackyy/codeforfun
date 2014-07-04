@@ -1,0 +1,36 @@
+public class Solution {
+    public int search(int[] A, int target) {
+        return _bsearch(A, 0, A.length-1, target);
+    }
+    
+    int _bsearch(int[] A, int s, int e, int target){
+        if(s<0 || s>=A.length || e<0 || e>=A.length)return -1;
+        if(s>e)return -1;
+        if(s==e){
+            if(A[s]==target)return s;
+            else return -1;
+        }
+        
+        int tmp;
+        int mid=(s+e)/2;
+        if(target==A[mid]){
+            return mid;
+        }else if(target<A[mid]){
+            if(A[e]<A[mid]){
+                tmp = _bsearch(A, s, mid-1, target);
+                if(tmp!=-1)return tmp;
+                else return _bsearch(A, mid+1, e, target);
+            }else{
+                return _bsearch(A, s, mid-1, target);
+            }
+        }else{
+            if(A[s]>A[mid]){
+                tmp = _bsearch(A, s, mid-1, target);
+                if(tmp!=-1)return tmp;
+                else return _bsearch(A, mid+1, e, target);
+            }else{
+                return _bsearch(A, mid+1, e, target);
+            }
+        }
+    }
+}
