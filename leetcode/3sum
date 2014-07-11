@@ -1,0 +1,85 @@
+public class Solution{
+    public List<List<Integer>> threeSum(int[] num) {
+        List<List<Integer>> results= new ArrayList<List<Integer>>();
+        Map map = new HashMap();
+        for(int i=0;i<num.length;i++){
+            if(map.containsKey(num[i])){
+                map.put(num[i], (Integer)map.get(num[i])+1);
+            }else{
+                map.put(num[i], 1);
+            }
+        }
+        
+        if(num.length==0)return results;
+        if(map.containsKey(0) && (Integer)map.get(0)>2)addresult(0,0,0,results);
+        Arrays.sort(num);
+        int p=0;
+        int n=0;
+        if(num[0]>=0)return results;
+        if(num[num.length-1]<=0)return results;
+        while(n<num.length && num[n]<0)n++;
+        if(n==num.length)return results;
+        p=n;
+        n=n-1;
+        while(p<num.length && num[p]==0)p++;
+
+        int nn=n;
+        int pp=p-1;
+        while(pp<(num.length-1)){
+            pp++;
+            nn=n+1;
+            if(pp>p && num[pp]==num[pp-1])continue;
+            while(nn>0){
+                nn--;
+                if(nn<n && num[nn]==num[nn+1])continue;
+                int sum=num[pp]+num[nn];
+                if(sum<0){
+                    break;
+                }else if(sum==0){
+                    if(map.containsKey(0)){
+                        addresult(num[nn], 0, num[pp], results);
+                    }
+                }else{
+                    int k=-sum;
+                    if(k>num[nn])continue;
+                    if(k==num[nn]){
+                        if(((Integer)map.get(k))>1) addresult(k, k, num[pp],results);
+                    }else if(map.containsKey(k))
+                        addresult(k,num[nn],num[pp], results);
+                    }
+                }
+            }
+        
+        nn=n+1;
+        while(nn>0){
+            nn--;
+            pp=p-1;
+            if(nn<n && num[nn]==num[nn+1])continue;
+            while(pp<(num.length-1)){
+                pp++;
+                if(pp>p && num[pp]==num[pp-1])continue;
+                int sum=num[nn]+num[pp];
+                if(sum>0){
+                    break;
+                }else if(sum<0){
+                    int k=-sum;
+                    if(k<num[pp])continue;
+                    if(k==num[pp]){
+                        if(((Integer)map.get(k))>1)addresult(num[nn],k,k, results);
+                    }else if(map.containsKey(k)){
+                        addresult(num[nn],num[pp],k, results);
+                    }
+                }
+            }
+        }
+        return results;
+    }
+    
+    void addresult(int i, int j, int k, List<List<Integer>> results){
+        List<Integer> result=new ArrayList<Integer>();
+        result.add(i);
+        result.add(j);
+        result.add(k);
+        results.add(result);
+    }
+}    
