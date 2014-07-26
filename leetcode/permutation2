@@ -1,0 +1,45 @@
+public class Solution {
+    public List<List<Integer>> permuteUnique(int[] num) {
+        List<List<Integer>> results=new ArrayList<List<Integer>>();
+        Arrays.sort(num);
+        ArrayList<Integer> result=new ArrayList<Integer>();
+        for(int i=0;i<num.length;i++)result.add(num[i]);
+        results.add(result);
+        
+        while(true){
+            int k=num.length-2;
+            while(k>=0 && num[k]>=num[k+1])k--;
+            if(k<0)break;
+            int ll=0;
+            int l=k+1;
+            int min=Integer.MAX_VALUE;
+            while(l<num.length){
+                if(num[l]>num[k]){
+                    if(num[l]<=min){
+                        min=num[l];
+                        ll=l;
+                    }
+                }
+                l++;
+            }
+            int tmp=num[k];
+            num[k]=num[ll];
+            num[ll]=tmp;
+            
+            int e=num.length-1;
+            k++;
+            while(k<=e){
+                tmp=num[k];
+                num[k]=num[e];
+                num[e]=tmp;
+                k++;
+                e--;
+            }
+            
+            result=new ArrayList<Integer>();
+            for(int i=0;i<num.length;i++)result.add(num[i]);
+            results.add(result);
+        }
+        return results;
+    }
+}
